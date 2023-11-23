@@ -85,4 +85,4 @@ export default function Main({category}) {
              </div>
     </div>
   );
-}
+}
