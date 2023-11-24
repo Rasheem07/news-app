@@ -9,13 +9,15 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { useState } from 'react';
 
 function App() {
+  const [query, setQuery] = useState('')
   return (
     <Router>
-      <Nav />
+      <Nav setquery={setQuery}/>
       <Routes>
-        <Route path='/' element={<Main key="home" category="general" />} />
+        <Route path='/' element={<Main key="home" category="general" query={query}/>} />
         <Route path='/business' element={<Main key="business" category="business" />} />
         <Route path='/entertainment' element={<Main key="entertainment" category="entertainment" />} />
         <Route path='/general' element={<Main key="general" category="general" />} />

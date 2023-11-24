@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Newslist from "./newslist";
 
-export default function Main({category}) {
+export default function Main({category, query}) {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setpage] = useState(1);
@@ -17,7 +17,9 @@ export default function Main({category}) {
   }
 
   useEffect(() => {
-    const url = `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=42d437807ba945d185b73f42f77bae87&pagesize=15&page=${page}`;
+    console.log(query)
+    const encodedQuery = encodeURIComponent(query);
+    const url = `https://newsapi.org/v2/top-headlines?country=in&q=${encodedQuery}&category=${category}&apiKey=42d437807ba945d185b73f42f77bae87&pagesize=15&page=${page}`;
     // const url = "https://newsapi.org/v2/everything?q=tesla&from=2023-10-22&sortBy=publishedAt&apiKey=42d437807ba945d185b73f42f77bae87"
 
     setLoading(true);
@@ -31,17 +33,17 @@ export default function Main({category}) {
       })
       .then((data) => {
         setNews(data.articles);
-        setTotalPages(Math.ceil(data.totalResults / 12)); 
+        setTotalPages(Math.ceil(data.totalResults / 15)); 
         console.log(data);
       })
       .catch((error) => {
         console.error("Fetch error:", error);
       })
       .finally(() => setLoading(false));
-  }, [page, totalpages, category, ]); // Empty dependency array to execute only once on component mount
+  }, [page, totalpages, category, query]); // Empty dependency array to execute only once on component mount
 
   return (
-    <div className="container h-100 w-100" style={{ minHeight: "100vh",minWidth:"85vw", margin: "0 auto" }}>
+    <div className="container h-100 w-100" style={{ minHeight: "100vh",minWidth:"90vw", margin: "0 auto" }}>
       <h1 className="text-center my-2">News app</h1>
       {!loading ? (
         <>
@@ -53,6 +55,7 @@ export default function Main({category}) {
                 title={newsItem.title}
                 desc={newsItem.description}
                 url={newsItem.url}
+                publishtime={newsItem.publishedAt}
               />
             ))}
           </div>

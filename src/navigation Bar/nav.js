@@ -1,7 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
-export default function Nav() {
+export default function Nav(props) {
+ const [searchText, setsearchText] = useState('')
+
+  function handleSearchText(e){
+    setsearchText(e.target.value.trim())
+  }
+
+  
+  function handleClickOnSearch(e) {
+    e.preventDefault();
+    console.log(searchText)
+    props.setquery(searchText);
+  }  
+
   return (
     <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
       <div className="container-fluid">
@@ -100,8 +114,9 @@ export default function Nav() {
               placeholder="Search"
               aria-label="Search"
               style={{minWidth: "25vw"}}
+              onChange={handleSearchText}
             />
-            <button className="btn btn-outline-primary" type="submit">
+            <button className="btn btn-outline-primary" type="submit" onClick={handleClickOnSearch}>
               Search
             </button>
           </form>
